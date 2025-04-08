@@ -24,4 +24,12 @@ public class ProfileController {
         model.addAttribute("email", user.email);
         return "profile.html";
     }
+    @PostMapping("/profile")
+    public String updateProfile(@RequestParam String name, @RequestParam String email, Model model) {
+        userService.updateUser(name, email);
+        model.addAttribute("name", name);
+        model.addAttribute("email", email);
+        model.addAttribute("message", "Profile updated!");
+        return "profile.html";
+    }
 }
