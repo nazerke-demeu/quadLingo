@@ -241,12 +241,15 @@
         <p th:text="${lesson.description}"></p>
         <p th:text="${lesson.content}"></p>
       </div>
+
       <div th:if="${isAdmin}">
         <form th:action="@{/learn/delete}" method="post">
           <input type="hidden" name="id" th:value="${lesson.id}">
           <button type="submit">Delete</button>
         </form>
       </div>
+
+
     </div>
     <div th:if="${lessons.isEmpty()}">
       <p>No lessons available.</p>

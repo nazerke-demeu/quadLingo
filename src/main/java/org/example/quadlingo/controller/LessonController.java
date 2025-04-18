@@ -66,5 +66,17 @@ public class LessonController {
             model.addAttribute("isAdmin", userService.isAdmin());
             return "learn.html";
         }
+
+        @PostMapping("/learn/delete")
+        public String deleteLesson(@RequestParam Integer id) {
+            if (!userService.isAdmin()) {
+                return "redirect:/learn";
+            }
+            try {
+                lessonService.deleteLesson(id);
+            } catch (Exception e) {
+            }
+            return "redirect:/learn";
+        }
     }
 }
