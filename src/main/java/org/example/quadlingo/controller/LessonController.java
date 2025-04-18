@@ -31,7 +31,7 @@ public class LessonController {
     @PostMapping("/learn/add")
     public String addLesson(@RequestParam String title, @RequestParam String description, @RequestParam String content, Model model) {
         if (!userService.isAdmin()) {
-            return "redirect:/learn"; // Only admins can add lessons
+            return "redirect:/learn";
         }
         try {
             if (title == null || title.trim().isEmpty() || description == null || description.trim().isEmpty() || content == null || content.trim().isEmpty()) {
