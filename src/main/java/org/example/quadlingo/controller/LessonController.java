@@ -1,4 +1,4 @@
-package org.example.lingo.controller;
+package org.example.quadlingo.controller;
 
 import org.example.lingo.service.LessonService;
 import org.example.lingo.service.UserService;
@@ -18,32 +18,28 @@ public class LessonController {
     @Autowired
     private UserService userService;
 
-    // Show the learn page
     @GetMapping("/learn")
     public String getLearnPage(Model model) {
         if (userService.getCurrentUser() == null) {
-            return "redirect:/login"; // Redirect to login if not logged in
+            return "redirect:/login";
         }
         model.addAttribute("lessons", lessonService.getAllLessons());
         model.addAttribute("isAdmin", userService.isAdmin());
         return "learn.html";
     }
 
-    // Handle lesson creation
     @PostMapping("/learn/add")
     public String addLesson(@RequestParam String title, @RequestParam String description, @RequestParam String content, Model model) {
         if (!userService.isAdmin()) {
             return "redirect:/learn"; // Only admins can add lessons
         }
         try {
-            // Валидация входных данных
             if (title == null || title.trim().isEmpty() || description == null || description.trim().isEmpty() || content == null || content.trim().isEmpty()) {
                 model.addAttribute("error", "Title, description, and content cannot be empty");
                 model.addAttribute("lessons", lessonService.getAllLessons());
                 model.addAttribute("isAdmin", userService.isAdmin());
                 return "learn.html";
             }
-            // Проверка длины полей
             if (title.length() > 255) {
                 model.addAttribute("error", "Title must be 255 characters or less");
                 model.addAttribute("lessons", lessonService.getAllLessons());
@@ -70,19 +66,5 @@ public class LessonController {
             model.addAttribute("isAdmin", userService.isAdmin());
             return "learn.html";
         }
-    }
-
-    // Handle lesson deletion
-    @PostMapping("/learn/delete")
-    public String deleteLesson(@RequestParam Integer id) {
-        if (!userService.isAdmin()) {
-            return "redirect:/learn"; // Only admins can delete lessons
-        }
-        try {
-            lessonService.deleteLesson(id);
-        } catch (Exception e) {
-            // Log error if needed, but redirect to avoid 500
-        }
-        return "redirect:/learn";
     }
 }
