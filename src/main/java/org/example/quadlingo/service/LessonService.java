@@ -1,4 +1,4 @@
-package org.example.lingo.service;
+package org.example.quadlingo.service;
 
 import org.example.lingo.Lesson;
 import org.example.lingo.repository.LessonRepository;

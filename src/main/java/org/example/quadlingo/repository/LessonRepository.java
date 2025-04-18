@@ -1,4 +1,4 @@
-package org.example.lingo.repository;
+package org.example.quadlingo.repository;
 
 import org.example.lingo.Lesson;
 import org.springframework.data.jpa.repository.JpaRepository;
