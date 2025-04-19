@@ -26,7 +26,8 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, Model model) {
         if (userService.findUser(email, password) != null) {
-            return "redirect:/profile";
+
+            return "redirect:/learn";
         }
         model.addAttribute("loggedIn", false);
         model.addAttribute("error", "Wrong email or password");
@@ -36,9 +37,13 @@ public class LoginController {
     @PostMapping("/register")
     public String register(@RequestParam String name, @RequestParam String email,
                            @RequestParam String password, Model model) {
-        userService.addUser(name, email, password);
-        model.addAttribute("loggedIn", false);
-        return "redirect:/login";
+        try {
+            userService.addUser(name, email, password);
+            return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "login.html";
+        }
     }
 
     @PostMapping("/logout")

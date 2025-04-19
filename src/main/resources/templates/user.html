@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile - QuadLingo</title>
+    <title>User Dashboard - QuadLingo</title>
     <link rel="icon" href="https://icon2.cleanpng.com/20180323/are/avd1xo67l.webp">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
@@ -83,66 +83,9 @@
             margin-left: 250px;
             padding: 20px;
             flex: 1;
-        }
-
-        .profile-container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .profile-container h1 {
-            color: #0B1957;
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .profile-info {
-            margin-bottom: 20px;
-        }
-
-        .profile-info p {
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .profile-info p strong {
-            color: #0B1957;
-        }
-
-        .profile-form input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .profile-form button {
-            background: #0B1957;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .profile-form button:hover {
-            background: #1a2a7a;
-        }
-
-        .message {
-            color: #083900;
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -151,7 +94,7 @@
     <div class="header">
         <h2>QuadLingo</h2>
     </div>
-    <a th:href="@{/user/profile}" class="menu-item active">
+    <a th:href="@{/user/profile}" class="menu-item">
         <i class='bx bxs-user'></i>
         <span>Profile</span>
     </a>
@@ -169,19 +112,6 @@
     </div>
 </div>
 <div class="content">
-    <div class="profile-container">
-        <h1>Your Profile</h1>
-        <div class="profile-info">
-            <p><strong>Name:</strong> <span th:text="${name}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${email}"></span></p>
-        </div>
-        <form class="profile-form" th:action="@{/user/profile}" method="post">
-            <input type="text" name="name" th:value="${name}" placeholder="New Name" required>
-            <input type="email" name="email" th:value="${email}" placeholder="New Email" required>
-            <button type="submit">Update Profile</button>
-        </form>
-        <p th:if="${message}" th:text="${message}" class="message"></p>
-    </div>
 </div>
 </body>
 </html>

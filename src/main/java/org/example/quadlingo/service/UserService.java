@@ -19,7 +19,10 @@ public class UserService {
     }
 
     public List<User> addUser(String name, String email, String password) {
-        User user = new User(name, email, password);
+        if (userRepository.findByEmail(email) != null) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        User user = new User(name, email, password, "USER");
         userRepository.save(user);
         return userRepository.findAll();
     }
@@ -46,5 +49,13 @@ public class UserService {
 
     public void logout() {
         currentUser = null;
+    }
+
+    public boolean isAdmin() {
+        return currentUser != null && "ADMIN".equals(currentUser.getRole());
+    }
+
+    public boolean isUser() {
+        return currentUser != null && "USER".equals(currentUser.getRole());
     }
 }

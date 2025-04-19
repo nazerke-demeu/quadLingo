@@ -163,9 +163,12 @@
       white-space: pre-line;
     }
 
-    .lesson-item form button {
-      background: #ff4d4d;
-      color: #fff;
+    .lesson-item .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .lesson-item .actions button {
       padding: 8px 16px;
       border: none;
       border-radius: 6px;
@@ -174,7 +177,21 @@
       transition: background 0.3s;
     }
 
-    .lesson-item form button:hover {
+    .lesson-item .actions .edit-btn {
+      background: #4CAF50;
+      color: #fff;
+    }
+
+    .lesson-item .actions .edit-btn:hover {
+      background: #45a049;
+    }
+
+    .lesson-item .actions .delete-btn {
+      background: #ff4d4d;
+      color: #fff;
+    }
+
+    .lesson-item .actions .delete-btn:hover {
       background: #cc0000;
     }
 
@@ -234,6 +251,17 @@
       <button type="submit">Add Lesson</button>
     </form>
   </div>
+  <div th:if="${isAdmin and editLesson != null}" class="lesson-form">
+    <h2>Edit Lesson</h2>
+    <p th:if="${error}" th:text="${error}" class="error"></p>
+    <form th:action="@{/learn/edit}" method="post">
+      <input type="hidden" name="id" th:value="${editLesson.id}">
+      <input type="text" name="title" th:value="${editLesson.title}" placeholder="Lesson Title" maxlength="255" required>
+      <input type="text" name="description" th:value="${editLesson.description}" placeholder="Lesson Description" maxlength="10000" required>
+      <textarea name="content" placeholder="Lesson Content" rows="10" maxlength="10000" required th:text="${editLesson.content}"></textarea>
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
   <div class="lesson-list">
     <div th:each="lesson : ${lessons}" class="lesson-item">
       <div>
@@ -241,10 +269,14 @@
         <p th:text="${lesson.description}"></p>
         <p th:text="${lesson.content}"></p>
       </div>
-      <div th:if="${isAdmin}">
+      <div th:if="${isAdmin}" class="actions">
+        <form th:action="@{/learn/edit}" method="get">
+          <input type="hidden" name="id" th:value="${lesson.id}">
+          <button type="submit" class="edit-btn">Edit</button>
+        </form>
         <form th:action="@{/learn/delete}" method="post">
           <input type="hidden" name="id" th:value="${lesson.id}">
-          <button type="submit">Delete</button>
+          <button type="submit" class="delete-btn">Delete</button>
         </form>
       </div>
     </div>

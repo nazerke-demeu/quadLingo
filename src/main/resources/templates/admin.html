@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - QuadLingo</title>
+  <link rel="icon" href="https://icon2.cleanpng.com/20180323/are/avd1xo67l.webp">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f5f5f5;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .sidebar .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    .sidebar .header h2 {
+      font-size: 30px;
+      color: #0B1957;
+    }
+
+    .sidebar .search-bar {
+      display: flex;
+      align-items: center;
+      background: #0B1957;
+      border-radius: 20px;
+      padding: 10px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar .search-bar i {
+      color: #fff;
+      font-size: 18px;
+      margin-right: 10px;
+    }
+
+    .sidebar .search-bar input {
+      background: none;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .sidebar .search-bar input::placeholder {
+      color: #ccc;
+    }
+
+    .sidebar .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .sidebar .menu-item i {
+      font-size: 20px;
+      color: #666;
+    }
+
+    .sidebar .menu-item span {
+      font-size: 16px;
+    }
+
+    .sidebar .menu-item:hover,
+    .sidebar .menu-item.active {
+      background: #0B1957;
+      color: #fff;
+    }
+
+    .sidebar .menu-item:hover i,
+    .sidebar .menu-item.active i {
+      color: #fff;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="header">
+    <h2>QuadLingo</h2>
+  </div>
+  <a th:href="@{/admin/profile}" class="menu-item active">
+    <i class='bx bxs-user'></i>
+    <span>Profile</span>
+  </a>
+  <a th:href="@{/learn}" class="menu-item">
+    <i class='bx bxs-book'></i>
+    <span>Learn</span>
+  </a>
+  <div class="menu-item">
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" style="background: none; border: none; display: flex; align-items: center; gap: 15px; padding: 10px; cursor: pointer; color: #333;">
+        <i class='bx bxs-log-out'></i>
+        <span>Log Out</span>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="content">
+</div>
+</body>
+</html>
