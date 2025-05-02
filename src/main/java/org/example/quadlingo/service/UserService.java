@@ -47,6 +47,13 @@ public class UserService {
         }
     }
 
+    public void deleteUser() {
+        if (currentUser != null) {
+            userRepository.delete(currentUser);
+            logout(); // Выполняем выход после удаления
+        }
+    }
+
     public void logout() {
         currentUser = null;
     }

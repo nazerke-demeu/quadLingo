@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Quizzes - QuadLingo</title>
+  <link rel="icon" href="https://icon2.cleanpng.com/20180323/are/avd1xo67l.webp">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f5f5f5;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .sidebar .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    .sidebar .header h2 {
+      font-size: 30px;
+      color: #0B1957;
+    }
+
+    .sidebar .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .sidebar .menu-item i {
+      font-size: 20px;
+      color: #666;
+    }
+
+    .sidebar .menu-item span {
+      font-size: 16px;
+    }
+
+    .sidebar .menu-item:hover,
+    .sidebar .menu-item.active {
+      background: #0B1957;
+      color: #fff;
+    }
+
+    .sidebar .menu-item:hover i,
+    .sidebar .menu-item.active i {
+      color: #fff;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 30px;
+      flex: 1;
+    }
+
+    h1 {
+      color: #0B1957;
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .quiz-form, .edit-quiz-form {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .quiz-form input,
+    .quiz-form textarea,
+    .edit-quiz-form input,
+    .edit-quiz-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: "Poppins", sans-serif;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .quiz-form input:focus,
+    .quiz-form textarea:focus,
+    .edit-quiz-form input:focus,
+    .edit-quiz-form textarea:focus {
+      border-color: #0B1957;
+      box-shadow: 0 0 5px rgba(11, 25, 87, 0.2);
+      outline: none;
+    }
+
+    /* Стили для кастомного выпадающего списка */
+    .custom-select-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .custom-select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: "Poppins", sans-serif;
+      background: #f9f9f9 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="%230B1957" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+      background-size: 14px;
+      cursor: pointer;
+      color: #333;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    }
+
+    .custom-select:hover {
+      border-color: #0B1957;
+      background-color: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(11, 25, 87, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .custom-select.active {
+      border-color: #0B1957;
+      background-color: #fff;
+      box-shadow: 0 0 8px rgba(11, 25, 87, 0.2);
+      transform: translateY(0);
+    }
+
+    .custom-select-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+      margin-top: 2px;
+    }
+
+    .custom-select-options.show {
+      display: block;
+    }
+
+    .custom-select-option {
+      padding: 10px 12px;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .custom-select-option:hover {
+      background: #0B1957;
+      color: #fff;
+    }
+
+    .custom-select-option.selected {
+      background: #e6e9f5;
+      color: #0B1957;
+    }
+
+    .quiz-form button,
+    .edit-quiz-form button,
+    .back-btn {
+      background: #0B1957;
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, box-shadow 0.3s;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .quiz-form button:hover,
+    .edit-quiz-form button:hover,
+    .back-btn:hover {
+      background: #1a2a7a;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .quiz-list {
+      display: grid;
+      gap: 20px;
+    }
+
+    .quiz-item {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .quiz-item h3 {
+      color: #0B1957;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .quiz-item .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .quiz-item .actions button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .quiz-item .actions .edit-btn {
+      background: #4CAF50;
+      color: #fff;
+    }
+
+    .quiz-item .actions .edit-btn:hover {
+      background: #45a049;
+    }
+
+    .quiz-item .actions .start-btn {
+      background: #0B1957 !important;
+      color: #fff !important;
+      padding: 8px 16px !important;
+      border: none !important;
+      border-radius: 6px !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+      font-family: "Poppins", sans-serif !important;
+      text-align: center !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: background 0.3s, box-shadow 0.3s !important;
+      text-decoration: none !important;
+    }
+
+    .quiz-item .actions .start-btn:hover {
+      background: #1a2a7a !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .quiz-item .actions .delete-btn {
+      background: #ff4d4d;
+      color: #fff;
+    }
+
+    .quiz-item .actions .delete-btn:hover {
+      background: #cc0000;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-size: 14px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .question-container {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .question-container .remove-question-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff4d4d;
+      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.3s;
+    }
+
+    .question-container .remove-question-btn:hover {
+      background: #cc0000;
+    }
+
+    .add-question-btn {
+      background: #4CAF50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+      transition: background 0.3s;
+    }
+
+    .add-question-btn:hover {
+      background: #45a049;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 80px;
+      }
+
+      .sidebar .header h2,
+      .sidebar .menu-item span {
+        display: none;
+      }
+
+      .content {
+        margin-left: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="header">
+    <h2>QuadLingo</h2>
+  </div>
+  <a th:href="@{/admin/profile}" class="menu-item">
+    <i class='bx bxs-user'></i>
+    <span>Profile</span>
+  </a>
+  <a th:href="@{/learn}" class="menu-item active">
+    <i class='bx bxs-book'></i>
+    <span>Learn</span>
+  </a>
+  <div class="menu-item">
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" style="background: none; border: none; display: flex; align-items: center; gap: 15px; padding: 10px; cursor: pointer; color: #333;">
+        <i class='bx bxs-log-out'></i>
+        <span>Log Out</span>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="content">
+  <h1>Manage Quizzes for Lesson: <span th:text="${lesson.title}"></span></h1>
+  <div class="quiz-form">
+    <h2>Add New Quiz</h2>
+    <p th:if="${error}" th:text="${error}" class="error"></p>
+    <form th:action="@{/learn/quiz/add}" method="post" id="quizForm">
+      <input type="hidden" name="lessonId" th:value="${lesson.id}">
+      <input type="text" name="quizTitle" placeholder="Quiz Title" maxlength="255" required>
+      <div id="questions-container">
+        <div class="question-container" data-question-index="1">
+          <h4>Question 1</h4>
+          <input type="text" name="questions[1].text" placeholder="Question Text" required>
+          <input type="text" name="questions[1].option1" placeholder="Option 1" required>
+          <input type="text" name="questions[1].option2" placeholder="Option 2" required>
+          <input type="text" name="questions[1].option3" placeholder="Option 3" required>
+          <input type="text" name="questions[1].option4" placeholder="Option 4" required>
+          <div class="custom-select-wrapper">
+            <input type="hidden" name="questions[1].correct" class="custom-select-input" value="1" required>
+            <div class="custom-select" data-index="1">Option 1</div>
+            <ul class="custom-select-options">
+              <li class="custom-select-option selected" data-value="1">Option 1</li>
+              <li class="custom-select-option" data-value="2">Option 2</li>
+              <li class="custom-select-option" data-value="3">Option 3</li>
+              <li class="custom-select-option" data-value="4">Option 4</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="button-group">
+        <button type="button" class="add-question-btn" onclick="addQuestion()">Add Question</button>
+        <button type="submit">Add Quiz</button>
+        <button type="button" class="back-btn" onclick="window.location.href='/learn'">Back to Lessons</button>
+      </div>
+    </form>
+  </div>
+  <div th:if="${editQuiz != null}" class="edit-quiz-form">
+    <h2>Edit Quiz</h2>
+    <p th:if="${error}" th:text="${error}" class="error"></p>
+    <form th:action="@{/learn/quiz/edit}" method="post" id="editQuizForm">
+      <input type="hidden" name="id" th:value="${editQuiz.id}">
+      <input type="text" name="quizTitle" th:value="${editQuiz.title}" placeholder="Quiz Title" maxlength="255" required>
+      <div id="edit-questions-container">
+        <div th:each="question, iterStat : ${editQuiz.questions}" class="question-container" th:attr="data-question-index=${iterStat.index + 1}">
+          <h4 th:text="'Question ' + ${iterStat.index + 1}"></h4>
+          <input type="hidden" th:name="'questions[' + ${iterStat.index + 1} + '].id'" th:value="${question.id}">
+          <input type="text" th:name="'questions[' + ${iterStat.index + 1} + '].text'" th:value="${question.text}" placeholder="Question Text" required>
+          <input type="text" th:name="'questions[' + ${iterStat.index + 1} + '].option1'" th:value="${question.option1}" placeholder="Option 1" required>
+          <input type="text" th:name="'questions[' + ${iterStat.index + 1} + '].option2'" th:value="${question.option2}" placeholder="Option 2" required>
+          <input type="text" th:name="'questions[' + ${iterStat.index + 1} + '].option3'" th:value="${question.option3}" placeholder="Option 3" required>
+          <input type="text" th:name="'questions[' + ${iterStat.index + 1} + '].option4'" th:value="${question.option4}" placeholder="Option 4" required>
+          <div class="custom-select-wrapper">
+            <input type="hidden" th:name="'questions[' + ${iterStat.index + 1} + '].correct'" class="custom-select-input" th:value="${question.correctOption}" required>
+            <div class="custom-select" th:attr="data-index=${iterStat.index + 1}" th:text="'Option ' + ${question.correctOption}"></div>
+            <ul class="custom-select-options">
+              <li class="custom-select-option" th:classappend="${question.correctOption == 1} ? 'selected'" data-value="1">Option 1</li>
+              <li class="custom-select-option" th:classappend="${question.correctOption == 2} ? 'selected'" data-value="2">Option 2</li>
+              <li class="custom-select-option" th:classappend="${question.correctOption == 3} ? 'selected'" data-value="3">Option 3</li>
+              <li class="custom-select-option" th:classappend="${question.correctOption == 4} ? 'selected'" data-value="4">Option 4</li>
+            </ul>
+          </div>
+          <button type="button" class="remove-question-btn" th:onclick="'removeQuestion(' + ${iterStat.index + 1} + ')'">Remove Question</button>
+        </div>
+      </div>
+      <div class="button-group">
+        <button type="button" class="add-question-btn" onclick="addEditQuestion()">Add Question</button>
+        <button type="submit">Save Changes</button>
+        <a th:href="@{/learn}" class="back-btn">Cancel</a>
+      </div>
+    </form>
+  </div>
+  <div class="quiz-list">
+    <h2>Existing Quizzes</h2>
+    <div th:each="quiz : ${lesson.quizzes}" class="quiz-item">
+      <div>
+        <h3 th:text="${quiz.title}"></h3>
+      </div>
+      <div class="actions">
+        <form th:action="@{/learn/quiz/edit}" method="get">
+          <input type="hidden" name="id" th:value="${quiz.id}">
+          <button type="submit" class="edit-btn">Edit</button>
+        </form>
+        <form th:action="@{/learn/quiz/delete}" method="post">
+          <input type="hidden" name="id" th:value="${quiz.id}">
+          <button type="submit" class="delete-btn">Delete</button>
+        </form>
+      </div>
+    </div>
+    <div th:if="${lesson.quizzes.isEmpty()}">
+      <p>No quizzes available for this lesson.</p>
+    </div>
+  </div>
+</div>
+<script>
+  let questionIndex = document.querySelectorAll('#questions-container .question-container').length;
+  let editQuestionIndex = document.querySelectorAll('#edit-questions-container .question-container').length;
+
+  // Инициализация кастомных выпадающих списков
+  function initializeCustomSelects() {
+    document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+      const select = wrapper.querySelector('.custom-select');
+      const optionsList = wrapper.querySelector('.custom-select-options');
+      const options = optionsList.querySelectorAll('.custom-select-option');
+      const hiddenInput = wrapper.querySelector('.custom-select-input');
+
+      select.addEventListener('click', () => {
+        // Закрываем все другие списки
+        document.querySelectorAll('.custom-select-options').forEach(list => {
+          if (list !== optionsList) {
+            list.classList.remove('show');
+            list.parentElement.querySelector('.custom-select').classList.remove('active');
+          }
+        });
+        // Переключаем текущий список
+        optionsList.classList.toggle('show');
+        select.classList.toggle('active');
+      });
+
+      options.forEach(option => {
+        option.addEventListener('click', () => {
+          const value = option.getAttribute('data-value');
+          const text = option.textContent;
+
+          // Удаляем выделение у всех опций
+          options.forEach(opt => opt.classList.remove('selected'));
+          // Выделяем выбранную опцию
+          option.classList.add('selected');
+          // Обновляем текст и значение
+          select.textContent = text;
+          hiddenInput.value = value;
+          // Закрываем список
+          optionsList.classList.remove('show');
+          select.classList.remove('active');
+        });
+      });
+
+      // Закрытие списка при клике вне
+      document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) {
+          optionsList.classList.remove('show');
+          select.classList.remove('active');
+        }
+      });
+    });
+  }
+
+  // Инициализация при загрузке страницы
+  document.addEventListener('DOMContentLoaded', initializeCustomSelects);
+
+  function addQuestion() {
+    questionIndex++;
+    const container = document.getElementById('questions-container');
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question-container';
+    questionDiv.setAttribute('data-question-index', questionIndex);
+    questionDiv.innerHTML = `
+      <h4>Question ${questionIndex}</h4>
+      <input type="text" name="questions[${questionIndex}].text" placeholder="Question Text" required>
+      <input type="text" name="questions[${questionIndex}].option1" placeholder="Option 1" required>
+      <input type="text" name="questions[${questionIndex}].option2" placeholder="Option 2" required>
+      <input type="text" name="questions[${questionIndex}].option3" placeholder="Option 3" required>
+      <input type="text" name="questions[${questionIndex}].option4" placeholder="Option 4" required>
+      <div class="custom-select-wrapper">
+        <input type="hidden" name="questions[${questionIndex}].correct" class="custom-select-input" value="1" required>
+        <div class="custom-select" data-index="${questionIndex}">Option 1</div>
+        <ul class="custom-select-options">
+          <li class="custom-select-option selected" data-value="1">Option 1</li>
+          <li class="custom-select-option" data-value="2">Option 2</li>
+          <li class="custom-select-option" data-value="3">Option 3</li>
+          <li class="custom-select-option" data-value="4">Option 4</li>
+        </ul>
+      </div>
+      <button type="button" class="remove-question-btn" onclick="removeQuestion(${questionIndex})">Remove Question</button>
+    `;
+    container.appendChild(questionDiv);
+    initializeCustomSelects(); // Инициализация для нового выпадающего списка
+  }
+
+  function addEditQuestion() {
+    editQuestionIndex++;
+    const container = document.getElementById('edit-questions-container');
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question-container';
+    questionDiv.setAttribute('data-question-index', editQuestionIndex);
+    questionDiv.innerHTML = `
+      <h4>Question ${editQuestionIndex}</h4>
+      <input type="text" name="questions[${editQuestionIndex}].text" placeholder="Question Text" required>
+      <input type="text" name="questions[${editQuestionIndex}].option1" placeholder="Option 1" required>
+      <input type="text" name="questions[${editQuestionIndex}].option2" placeholder="Option 2" required>
+      <input type="text" name="questions[${editQuestionIndex}].option3" placeholder="Option 3" required>
+      <input type="text" name="questions[${editQuestionIndex}].option4" placeholder="Option 4" required>
+      <div class="custom-select-wrapper">
+        <input type="hidden" name="questions[${editQuestionIndex}].correct" class="custom-select-input" value="1" required>
+        <div class="custom-select" data-index="${editQuestionIndex}">Option 1</div>
+        <ul class="custom-select-options">
+          <li class="custom-select-option selected" data-value="1">Option 1</li>
+          <li class="custom-select-option" data-value="2">Option 2</li>
+          <li class="custom-select-option" data-value="3">Option 3</li>
+          <li class="custom-select-option" data-value="4">Option 4</li>
+        </ul>
+      </div>
+      <button type="button" class="remove-question-btn" onclick="removeQuestion(${editQuestionIndex})">Remove Question</button>
+    `;
+    container.appendChild(questionDiv);
+    initializeCustomSelects(); // Инициализация для нового выпадающего списка
+  }
+
+  function removeQuestion(index) {
+    const questionDiv = document.querySelector(`.question-container[data-question-index="${index}"]`);
+    if (questionDiv) {
+      questionDiv.remove();
+      // Reindex questions to avoid gaps
+      const containers = document.querySelectorAll('.question-container');
+      containers.forEach((container, i) => {
+        const newIndex = i + 1;
+        container.setAttribute('data-question-index', newIndex);
+        container.querySelector('h4').textContent = `Question ${newIndex}`;
+        const inputs = container.querySelectorAll('input');
+        inputs.forEach(input => {
+          const name = input.getAttribute('name');
+          if (name) {
+            input.setAttribute('name', name.replace(/questions\[\d+\]/, `questions[${newIndex}]`));
+          }
+        });
+        const customSelect = container.querySelector('.custom-select');
+        const customInput = container.querySelector('.custom-select-input');
+        if (customSelect && customInput) {
+          customSelect.setAttribute('data-index', newIndex);
+          customInput.setAttribute('name', `questions[${newIndex}].correct`);
+        }
+        const removeBtn = container.querySelector('.remove-question-btn');
+        if (removeBtn) {
+          removeBtn.setAttribute('onclick', `removeQuestion(${newIndex})`);
+        }
+      });
+    }
+  }
+</script>
+</body>
+</html>

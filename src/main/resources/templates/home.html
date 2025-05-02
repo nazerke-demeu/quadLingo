@@ -1,221 +1,221 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>QuadLingo - The world's best way to learn kazakh</title>
-    <link rel="icon" href="https://icon2.cleanpng.com/20180323/are/avd1xo67l.webp">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-        @import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+  <meta charset="UTF-8">
+  <title>QuadLingo - The world's best way to learn kazakh</title>
+  <link rel="icon" href="https://icon2.cleanpng.com/20180323/are/avd1xo67l.webp">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
 
-        a {
-            text-decoration: none;
-        }
+    a {
+      text-decoration: none;
+    }
 
-        body {
-            font-family: "Poppins", sans-serif;
-        }
+    body {
+      font-family: "Poppins", sans-serif;
+    }
 
-        nav {
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #0B1957;
-            z-index: 99;
-        }
+    nav {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #0B1957;
+      z-index: 99;
+    }
 
-        .nav__content {
-            max-width: 1200px;
-            margin: auto;
-            padding: 1.5rem 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    .nav__content {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        nav .logo a {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #F8F3EA;
-            transition: 0.3s;
-        }
+    nav .logo a {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #F8F3EA;
+      transition: 0.3s;
+    }
 
-        nav .checkbox {
-            display: none;
-        }
+    nav .checkbox {
+      display: none;
+    }
 
-        nav input {
-            display: none;
-        }
+    nav input {
+      display: none;
+    }
 
-        nav .checkbox i {
-            font-size: 2rem;
-            color: #F8F3EA;
-            cursor: pointer;
-        }
+    nav .checkbox i {
+      font-size: 2rem;
+      color: #F8F3EA;
+      cursor: pointer;
+    }
 
-        ul {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            list-style: none;
-            transition: left 0.3s;
-        }
+    ul {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      list-style: none;
+      transition: left 0.3s;
+    }
 
-        ul li a, ul li button {
-            padding: 0.5rem 1rem;
-            border: 2px solid transparent;
-            text-decoration: none;
-            font-weight: 600;
-            color: #F8F3EA;
-            background: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    ul li a, ul li button {
+      padding: 0.5rem 1rem;
+      border: 2px solid transparent;
+      text-decoration: none;
+      font-weight: 600;
+      color: #F8F3EA;
+      background: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        ul li a:hover, ul li button:hover {
-            border-top-color: #F8F3EA;
-            border-bottom-color: #F8F3EA;
-            color: #F8F3EA;
-        }
+    ul li a:hover, ul li button:hover {
+      border-top-color: #F8F3EA;
+      border-bottom-color: #F8F3EA;
+      color: #F8F3EA;
+    }
 
-        .section {
-            background-color: white;
-        }
+    .section {
+      background-color: white;
+    }
 
-        .section__container {
-            min-height: 100vh;
-            max-width: 1200px;
-            margin: auto;
-            padding: 1rem;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 4rem;
-            align-items: center;
-        }
+    .section__container {
+      min-height: 100vh;
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4rem;
+      align-items: center;
+    }
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-        .content form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            max-width: 300px;
-        }
+    .content form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 300px;
+    }
 
-        .content form div {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+    .content form div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-        .content form input {
-            padding: 0.5rem;
-            border: 1px solid #6b7280;
-            border-radius: 4px;
-        }
+    .content form input {
+      padding: 0.5rem;
+      border: 1px solid #6b7280;
+      border-radius: 4px;
+    }
 
-        .content form button {
-            padding: 0.5rem;
-            background-color: #0B1957;
-            color: #F8F3EA;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    .content form button {
+      padding: 0.5rem;
+      background-color: #0B1957;
+      color: #F8F3EA;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        .content form button:hover {
-            background-color: #1a2a7a;
-        }
+    .content form button:hover {
+      background-color: #1a2a7a;
+    }
 
-        .subtitle {
-            letter-spacing: 2px;
-            color: #6b7280;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+    .subtitle {
+      letter-spacing: 2px;
+      color: #6b7280;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
 
-        .title {
-            font-size: 2.5rem;
-            font-weight: 400;
-            line-height: 3rem;
-            color: #1f2937;
-            margin-bottom: 1rem;
-        }
+    .title {
+      font-size: 2.5rem;
+      font-weight: 400;
+      line-height: 3rem;
+      color: #1f2937;
+      margin-bottom: 1rem;
+    }
 
-        .title span {
-            font-weight: 600;
-        }
+    .title span {
+      font-weight: 600;
+    }
 
-        .description {
-            line-height: 1.5rem;
-            color: #6b7280;
-            margin-bottom: 2rem;
-        }
+    .description {
+      line-height: 1.5rem;
+      color: #6b7280;
+      margin-bottom: 2rem;
+    }
 
-        .image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .illustration {
-            max-width: 80%;
-            height: auto;
-        }
-    </style>
+    .illustration {
+      max-width: 80%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
 <nav>
-    <div class="nav__content">
-        <div class="logo"><a href="#">QuadLingo</a></div>
-        <label for="check" class="checkbox">
-            <i class="ri-menu-line"></i>
-        </label>
-        <input type="checkbox" name="check" id="check"/>
-        <ul>
-            <li>
-                <div>
-                    <th:block th:if="${loggedIn}">
-                        <a href="#" th:onclick="'logout()'" id="logout-link">Log Out</a>
-                    </th:block>
-                    <th:block th:unless="${loggedIn}">
-                        <a th:href="@{/login}">Log In</a>
-                    </th:block>
-                </div>
-            </li>
-        </ul>
-    </div>
+  <div class="nav__content">
+    <div class="logo"><a href="#">QuadLingo</a></div>
+    <label for="check" class="checkbox">
+      <i class="ri-menu-line"></i>
+    </label>
+    <input type="checkbox" name="check" id="check"/>
+    <ul>
+      <li>
+        <div>
+          <th:block th:if="${loggedIn}">
+            <a href="#" th:onclick="'logout()'" id="logout-link">Log Out</a>
+          </th:block>
+          <th:block th:unless="${loggedIn}">
+            <a th:href="@{/login}">Log In</a>
+          </th:block>
+        </div>
+      </li>
+    </ul>
+  </div>
 </nav>
 
 <section class="section">
-    <div class="section__container">
-        <div class="content">
-            <p class="subtitle">WITH QUADLINGO</p>
-            <h1 class="title">
-                <span>free. fun. effective.</span>
-            </h1>
-            <p class="description">
-                Learning with QuadLingo is fun, and <span>research shows that it works</span>! With quick, bite-sized
-                lessons, you’ll earn points and unlock new levels while gaining real-world communication skills.
-            </p>
-        </div>
-        <div class="image-container">
-            <img th:src="@{/images/home.jpg}" alt="People speaking different languages" class="illustration"/>
-        </div>
+  <div class="section__container">
+    <div class="content">
+      <p class="subtitle">WITH QUADLINGO</p>
+      <h1 class="title">
+        <span>free. fun. effective.</span>
+      </h1>
+      <p class="description">
+        Learning with QuadLingo is fun, and <span>research shows that it works</span>! With quick, bite-sized
+        lessons, you’ll earn points and unlock new levels while gaining real-world communication skills.
+      </p>
     </div>
+    <div class="image-container">
+      <img th:src="@{/images/home.jpg}" alt="People speaking different languages" class="illustration"/>
+    </div>
+  </div>
 </section>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9316e2597fc8bcbb',t:'MTc0NDg0MDA3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9316e2597fc8bcbb',t:'MTc0NDg0MDA3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'938050611c59bcac',t:'MTc0NTk0NTU5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93814ed06ea1bca6',t:'MTc0NTk1NjAxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

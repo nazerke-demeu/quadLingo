@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz - QuadLingo</title>
+  <link rel="icon" href="https://icon2.cleanpng.com/20180323/are/avd1xo67l.webp">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f5f5f5;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .sidebar .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    .sidebar .header h2 {
+      font-size: 30px;
+      color: #0B1957;
+    }
+
+    .sidebar .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .sidebar .menu-item i {
+      font-size: 20px;
+      color: #666;
+    }
+
+    .sidebar .menu-item span {
+      font-size: 16px;
+    }
+
+    .sidebar .menu-item:hover,
+    .sidebar .menu-item.active {
+      background: #0B1957;
+      color: #fff;
+    }
+
+    .sidebar .menu-item:hover i,
+    .sidebar .menu-item.active i {
+      color: #fff;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 30px;
+      flex: 1;
+    }
+
+    h1 {
+      color: #0B1957;
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .quiz-form {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .quiz-form h2 {
+      color: #0B1957;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .quiz-form label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .quiz-form input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .quiz-form button {
+      background: #0B1957;
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.3s;
+      margin-top: 15px;
+    }
+
+    .quiz-form button:hover {
+      background: #1a2a7a;
+    }
+
+    .result {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .result h2 {
+      color: #0B1957;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .result p {
+      color: #555;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .result a {
+      background: #0B1957;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .result a:hover {
+      background: #1a2a7a;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-size: 14px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .lives {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .lives i {
+      font-size: 24px;
+      color: #ff4d4d;
+    }
+
+    .lives i.empty {
+      color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 80px;
+      }
+
+      .sidebar .header h2,
+      .sidebar .menu-item span {
+        display: none;
+      }
+
+      .content {
+        margin-left: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="header">
+    <h2>QuadLingo</h2>
+  </div>
+  <a th:href="@{/user/profile}" class="menu-item">
+    <i class='bx bxs-user'></i>
+    <span>Profile</span>
+  </a>
+  <a th:href="@{/learn}" class="menu-item active">
+    <i class='bx bxs-book'></i>
+    <span>Learn</span>
+  </a>
+  <a th:href="@{/game}" class="menu-item">
+    <i class='bx bxs-game'></i>
+    <span>Mini Games</span>
+  </a>
+
+  <div class="menu-item">
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" style="background: none; border: none; display: flex; align-items: center; gap: 15px; padding: 10px; cursor: pointer; color: #333;">
+        <i class='bx bxs-log-out'></i>
+        <span>Log Out</span>
+      </button>
+    </form>
+  </div>
+</div>
+<div class="content">
+  <h1 th:text="${quiz.title}"></h1>
+  <p th:if="${error}" th:text="${error}" class="error"></p>
+  <!-- Отображение результата только при завершении -->
+  <div th:if="${currentQuestionIndex == null}" class="result">
+    <h2 th:text="${lives == 0} ? 'Quiz Over!' : 'Quiz Completed!'"></h2>
+    <p th:text="'Your score: ' + ${score} "></p>
+    <p th:if="${lives != null}" th:text="'Lives remaining: ' + ${lives}"></p>
+    <a th:href="@{/learn}" class="back-btn">Back to Lessons</a>
+  </div>
+  <!-- Отображение вопросов, если квиз активен -->
+  <div th:unless="${currentQuestionIndex == null}" class="quiz-form">
+    <div class="lives" th:if="${lives != null}">
+      <i class='bx bxs-heart' th:classappend="${lives >= 1} ? '' : 'empty'"></i>
+      <i class='bx bxs-heart' th:classappend="${lives >= 2} ? '' : 'empty'"></i>
+      <i class='bx bxs-heart' th:classappend="${lives >= 3} ? '' : 'empty'"></i>
+    </div>
+    <form th:action="@{/learn/quiz/next}" method="post" id="quizForm">
+      <input type="hidden" name="quizId" th:value="${quiz.id}">
+      <input type="hidden" name="currentQuestionIndex" th:value="${currentQuestionIndex}">
+      <div th:with="question=${questions[currentQuestionIndex]}">
+        <h2 th:text="${question.text}"></h2>
+        <label>
+          <input type="radio" th:name="'answer_' + ${question.id}" value="1" required>
+          <span th:text="${question.option1}"></span>
+        </label>
+        <label>
+          <input type="radio" th:name="'answer_' + ${question.id}" value="2" required>
+          <span th:text="${question.option2}"></span>
+        </label>
+        <label>
+          <input type="radio" th:name="'answer_' + ${question.id}" value="3" required>
+          <span th:text="${question.option3}"></span>
+        </label>
+        <label>
+          <input type="radio" th:name="'answer_' + ${question.id}" value="4" required>
+          <span th:text="${question.option4}"></span>
+        </label>
+        <button type="submit" th:text="${currentQuestionIndex < total - 1} ? 'Next' : 'Submit'"></button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  document.getElementById('quizForm').addEventListener('submit', function(e) {
+    const formData = new FormData(this);
+    console.log('Form Data:');
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    const radios = document.querySelectorAll('input[type="radio"]:checked');
+    if (radios.length === 0) {
+      e.preventDefault();
+      alert('Please select an answer before proceeding.');
+    }
+  });
+</script>
+</body>
+</html>

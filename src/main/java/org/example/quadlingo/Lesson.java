@@ -1,6 +1,7 @@
 package org.example.quadlingo;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "lessons")
@@ -19,6 +20,9 @@ public class Lesson {
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Quiz> quizzes;
 
     public Lesson() {
     }
@@ -59,5 +63,13 @@ public class Lesson {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public List<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
     }
 }
